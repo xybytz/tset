@@ -1,0 +1,38 @@
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local Backpack = LocalPlayer:FindFirstChild("Backpack")
+local RigType = Character:FindFirstChild("Humanoid").RigType
+local LagPower = 1000
+
+function Lag()
+    if Backpack:FindFirstChildOfClass("Tool") then
+        Backpack:FindFirstChildOfClass("Tool").Parent = Character
+    else
+        return error("No tools were found in your backpack, make sure you have atleast one tool in your backpack.")
+    end
+
+    if RigType == 1 then
+        for i = 1, LagPower do
+            RunService.Stepped:Connect(function()
+                local Clone = Character.RightHand.RightGrip:Clone()
+                Clone.Parent = Character.RightHand
+                wait()
+                Clone.Parent = Workspace
+            end)
+        end
+    else
+        for i = 1, LagPower do
+            RunService.Stepped:Connect(function()
+                local Clone = Character.RightArm.RightGrip:Clone()
+                Clone.Parent = Character.RightArm
+                wait()
+                Clone.Parent = Workspace
+            end)
+        end
+    end
+end
+
+Lag()
